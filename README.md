@@ -1,6 +1,6 @@
 # md-blog
 
-A blog platform built with React Router v7 and Markdown. Create beautiful content websites using simple Markdown files.
+Simple blog platform based on md files. Can be bootstrapped in one command.
 
 ## Features
 
