@@ -2,15 +2,11 @@
   "name": "md-blog",
   "private": true,
   "type": "module",
-  "bin": {
-    "md-blog-setup": "./setup.js"
-  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc",
-    "setup": "node setup.js"
+    "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
     "@react-router/node": "^7.9.2",
