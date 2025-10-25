@@ -48,9 +48,7 @@ export default function BlogPost() {
           </div>
           
           <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-            <span>Published</span>
-            <span>•</span>
-            <span>md-blog</span>
+            <span>Published on {post.meta.date}</span>
           </div>
         </div>
       </footer>

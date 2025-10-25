@@ -5,6 +5,7 @@ import { marked } from "marked";
 
 export type MarkdownMeta = {
   title: string;
+  date: string;
   description?: string;
   keywords?: string[] | string;
   tags?: string[] | string;
