@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
+import dayjs from "dayjs";
 
 export type MarkdownMeta = {
   title: string;
@@ -48,7 +49,12 @@ export function readMarkdownDir(name: "blog" | "pages"): MarkdownItem[] {
 }
 
 export function readBlogPosts(): MarkdownItem[] {
-  return readMarkdownDir("blog");
+  const posts = readMarkdownDir("blog");
+  return posts.sort((a, b) => {
+    const dateA = dayjs(a.meta.date);
+    const dateB = dayjs(b.meta.date);
+    return dateB.diff(dateA);
+  });
 }
 
 export function readPages(): MarkdownItem[] {
