@@ -200,3 +200,94 @@ export function Badge({
   );
 }
 
+export function TextCard({
+  title,
+  content,
+  isLink = true,
+  tags,
+  link,
+  links,
+  ...props
+}: ComponentProps<"div"> & {
+  title: string;
+  content?: string;
+  isLink?: boolean;
+  tags?: string[] | string;
+  link?: string;
+  links?: Array<{ text: string; link: string }>;
+}) {
+  const tagArray = Array.isArray(tags) ? tags : tags ? String(tags).split(",") : [];
+  
+  return (
+    <Card className="group hover:shadow-xl transition-all duration-300" {...props}>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          {isLink && link ? (
+            <Link 
+              to={link} 
+              className="text-xl font-bold text-neutral-600 dark:text-neutral-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2"
+            >
+              {title}
+            </Link>
+          ) : (
+            <h3 className="text-xl font-bold text-neutral-600 dark:text-neutral-300 line-clamp-2">
+              {title}
+            </h3>
+          )}
+          {content && (
+            <p className="text-neutral-600 dark:text-neutral-400 line-clamp-3">
+              {content}
+            </p>
+          )}
+        </div>
+        
+        {tagArray.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tagArray.slice(0, 3).map((tag) => (
+              <Badge key={tag.trim()} variant="secondary" className="text-xs">
+                {tag.trim()}
+              </Badge>
+            ))}
+            {tagArray.length > 3 && (
+              <Badge variant="outline" className="text-xs">
+                +{tagArray.length - 3}
+              </Badge>
+            )}
+          </div>
+        )}
+        
+        {links && links.length > 0 ? (
+          <div className="pt-2 flex flex-wrap gap-2">
+            {links.map((linkItem, index) => (
+              <Link 
+                key={index}
+                to={linkItem.link}
+                variant="default"
+                className="inline-flex items-center gap-2"
+              >
+                {linkItem.text}
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ))}
+          </div>
+        ) : isLink && link ? (
+          <div className="pt-2">
+            <Link 
+              to={link}
+              variant="default"
+              className="inline-flex items-center gap-2"
+            >
+              Read More
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        ) : null}
+      </div>
+    </Card>
+  );
+}
+

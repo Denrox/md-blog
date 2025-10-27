@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router";
 import { readBlogPosts, collectTags } from "~/lib/content.server";
-import { Link, Title, Subtitle, Card, Badge, Button, PageHeading } from "~/components/ui";
+import { Link, Title, Subtitle, Card, Badge, Button, PageHeading, TextCard } from "~/components/ui";
 import { siteConfig } from "~/lib/config";
 
 const POSTS_PER_PAGE = 6;
@@ -60,57 +60,16 @@ export default function BlogIndex() {
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts?.map((post, index) => (
-          <Card 
-            key={post.slug} 
-            className="group hover:shadow-xl transition-all duration-300 animate-fade-in-up"
+          <TextCard
+            key={post.slug}
+            title={post.meta.title}
+            content={post.meta.description}
+            isLink={true}
+            tags={post.meta.tags}
+            link={`/blog/${post.slug}`}
+            className="animate-fade-in-up"
             style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Link 
-                  to={`/blog/${post.slug}`} 
-                  className="text-xl font-bold text-neutral-600 dark:text-neutral-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2"
-                >
-                  {post.meta.title}
-                </Link>
-                {post.meta.description && (
-                  <p className="text-neutral-600 dark:text-neutral-400 line-clamp-3">
-                    {post.meta.description}
-                  </p>
-                )}
-              </div>
-              
-              {post.meta.tags && (
-                <div className="flex flex-wrap gap-2">
-                  {(Array.isArray(post.meta.tags) ? post.meta.tags : String(post.meta.tags).split(","))
-                    .slice(0, 3)
-                    .map((tag) => (
-                      <Badge key={tag.trim()} variant="secondary" className="text-xs">
-                        {tag.trim()}
-                      </Badge>
-                    ))}
-                  {(Array.isArray(post.meta.tags) ? post.meta.tags : String(post.meta.tags).split(",")).length > 3 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{(Array.isArray(post.meta.tags) ? post.meta.tags : String(post.meta.tags).split(",")).length - 3}
-                    </Badge>
-                  )}
-                </div>
-              )}
-              
-              <div className="pt-2">
-                <Link 
-                  to={`/blog/${post.slug}`}
-                  variant="default"
-                  className="inline-flex items-center gap-2"
-                >
-                  Read More
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </Card>
+          />
         )) || []}
       </div>
 
