@@ -206,6 +206,7 @@ export function TextCard({
   isLink = true,
   tags,
   link,
+  clampContent = true,
   links,
   ...props
 }: ComponentProps<"div"> & {
@@ -215,6 +216,7 @@ export function TextCard({
   tags?: string[] | string;
   link?: string;
   links?: Array<{ text: string; link: string }>;
+  clampContent?: boolean;
 }) {
   const tagArray = Array.isArray(tags) ? tags : tags ? String(tags).split(",") : [];
   
@@ -235,7 +237,7 @@ export function TextCard({
             </h3>
           )}
           {content && (
-            <p className="text-neutral-600 dark:text-neutral-400 line-clamp-3">
+            <p className={`text-neutral-600 dark:text-neutral-400 ${clampContent ? 'line-clamp-3' : ''}`}>
               {content}
             </p>
           )}
