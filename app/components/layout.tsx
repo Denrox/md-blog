@@ -1,8 +1,18 @@
 import type { PropsWithChildren } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { Container, Link } from "./ui";
 import { siteConfig } from "../lib/config";
 
 export function Header({ pages }: { pages: { slug: string; title: string }[] }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Auto-collapse menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-neutral-200/50 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/70 dark:border-neutral-800/50 dark:bg-neutral-950/80 dark:supports-[backdrop-filter]:bg-neutral-950/70">
       <Container>
@@ -13,7 +23,9 @@ export function Header({ pages }: { pages: { slug: string; title: string }[] }) 
           >
             {siteConfig.title}
           </Link>
-          <nav className="flex items-center gap-2">
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-2">
             {pages.map((p) => (
               <Link
                 key={p.slug}
@@ -24,7 +36,43 @@ export function Header({ pages }: { pages: { slug: string; title: string }[] }) 
               </Link>
             ))}
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden pb-4 animate-fade-in">
+            <nav className="flex flex-col gap-2">
+              {pages.map((p) => (
+                <Link
+                  key={p.slug}
+                  to={`/pages/${p.slug}`}
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {p.title}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </Container>
     </header>
   );
