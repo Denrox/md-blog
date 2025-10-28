@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
 import dayjs from "dayjs";
+import hljs from "highlight.js";
 
 export type MarkdownMeta = {
   title: string;
@@ -19,6 +20,29 @@ export type MarkdownItem = {
 };
 
 const CONTENT_DIR = path.resolve(process.cwd(), "content");
+
+// Configure marked with highlight.js
+const renderer = new marked.Renderer();
+renderer.code = function(code: any, lang: string | undefined) {
+  const codeText = code.text || code;
+  const language = code.lang || lang;
+  
+  if (language && hljs.getLanguage(language)) {
+    try {
+      const highlighted = hljs.highlight(codeText, { language });
+      return `<pre><code class="hljs language-${language}">${highlighted.value}</code></pre>`;
+    } catch (err) {
+      const highlighted = hljs.highlightAuto(codeText);
+      return `<pre><code class="hljs">${highlighted.value}</code></pre>`;
+    }
+  }
+  const highlighted = hljs.highlightAuto(codeText);
+  return `<pre><code class="hljs">${highlighted.value}</code></pre>`;
+};
+
+marked.setOptions({
+  renderer: renderer,
+} as any);
 
 function getDir(name: "blog" | "pages") {
   return path.join(CONTENT_DIR, name);
