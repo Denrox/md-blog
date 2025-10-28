@@ -11,6 +11,7 @@ export type MarkdownMeta = {
   description?: string;
   keywords?: string[] | string;
   tags?: string[] | string;
+  social?: boolean;
 };
 
 export type MarkdownItem = {
@@ -23,9 +24,9 @@ const CONTENT_DIR = path.resolve(process.cwd(), "content");
 
 // Configure marked with highlight.js
 const renderer = new marked.Renderer();
-renderer.code = function(code: any, lang: string | undefined) {
-  const codeText = code.text || code;
-  const language = code.lang || lang;
+renderer.code = function({ text, lang }: { text: string; lang?: string }) {
+  const codeText = text;
+  const language = lang;
   
   if (language && hljs.getLanguage(language)) {
     try {

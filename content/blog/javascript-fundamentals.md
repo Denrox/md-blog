@@ -5,6 +5,7 @@ keywords: "javascript, fundamentals, programming, tutorial, beginner, ES6, async
 tags: ["javascript", "tutorial", "programming", "fundamentals", "beginner"]
 date: "2024-01-20"
 author: "Tech Guide"
+social: true
 ---
 
 JavaScript is one of the most popular programming languages in the world. Whether you're building web applications, mobile apps, or server-side applications, understanding JavaScript fundamentals is crucial.

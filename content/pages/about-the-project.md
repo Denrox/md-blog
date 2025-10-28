@@ -5,6 +5,7 @@ keywords: "about, project, markdown, content, web development"
 tags: ["about", "project", "markdown", "content"]
 date: "2024-01-15"
 author: "Project Team"
+social: true
 ---
 
 ## Project Idea
